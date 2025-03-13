@@ -21,7 +21,7 @@ const page = () => {
     getfeaturedHotels();
   }, []);
   return (
-    <main className="mx-72">
+    <main className="mx-auto max-lg:mx-72">
       <div className="text-primary-light text-center space-y-2 mb-12">
         <h1 className="font-bold text-4xl">Top Picks for You</h1>
         <em className="text-sm">
@@ -52,7 +52,7 @@ const page = () => {
               >
                 <div
                   style={{
-                    backgroundImage: `url(${hotel.image})`,
+                    backgroundImage: `url(${hotel.images?.images?.[0]})`,
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                   }}

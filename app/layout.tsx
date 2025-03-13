@@ -26,7 +26,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="overflow-x-hidden relative bg-background-light">
+    <html lang="en" className="bg-background-light">
       <body
         className={`${workSans.variable} ${workSans.className} ${geistMono.variable} antialiased`}
       >

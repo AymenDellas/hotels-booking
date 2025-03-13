@@ -7,15 +7,16 @@ import Link from "next/link";
 const FeaturedHotels = () => {
   const [featuredHotelsData, setFeaturedHotelsData] = useState<any>([]);
 
-  const getfeaturedHotels = async () => {
-    const { data, error } = await supabase.from("hotels").select("*");
-
-    if (error) console.error("Error fetching the hotel data : ", error);
-    setFeaturedHotelsData(data);
-  };
   useEffect(() => {
-    getfeaturedHotels();
+    const fetchHotels = async () => {
+      const { data, error } = await supabase.from("hotels").select("*");
+      if (error) console.error(error);
+      else setFeaturedHotelsData(data || []); // Ensure it's always an array
+    };
+
+    fetchHotels();
   }, []);
+
   return (
     <section className="flex flex-col items-center">
       <div className="text-primary-light text-center space-y-2">
@@ -24,19 +25,19 @@ const FeaturedHotels = () => {
           Discover the best-rated stays, handpicked just for you.
         </em>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-12 my-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 my-12">
         {featuredHotelsData
           .slice(-3)
 
           .map((hotel: any, index: any) => {
             return (
               <div
-                className="min-w-72 h-fit rounded-xl overflow-hidden bg-white shadow-xl "
+                className="w-96 h-fit rounded-xl overflow-hidden bg-white shadow-xl "
                 key={index}
               >
                 <div
                   style={{
-                    backgroundImage: `url(${hotel.image})`,
+                    backgroundImage: `url(${hotel.images?.images?.[0]})`,
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                   }}
