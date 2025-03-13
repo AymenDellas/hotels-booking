@@ -21,14 +21,14 @@ const page = () => {
     getfeaturedHotels();
   }, []);
   return (
-    <main className="mx-auto max-lg:mx-72">
+    <main className="mx-8 md:mx-20  xl:mx-36 2xl:mx-48">
       <div className="text-primary-light text-center space-y-2 mb-12">
         <h1 className="font-bold text-4xl">Top Picks for You</h1>
         <em className="text-sm">
           Discover the best-rated stays, handpicked just for you.
         </em>
       </div>
-      <section className="flex justify-center space-x-4">
+      <section className="flex flex-col items-center space-x-4">
         <div className="mb-4 w-40 max-w-md text-center">
           <label htmlFor="price" className="block font-semibold mb-2">
             Max Price: ${priceRange}
@@ -43,7 +43,7 @@ const page = () => {
             className="w-full cursor-pointer"
           />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-12 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  2xl:grid-cols-4 gap-12 mb-12">
           {filteredHotels.reverse().map((hotel: any, index: any) => {
             return (
               <div

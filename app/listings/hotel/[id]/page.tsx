@@ -6,7 +6,54 @@ import { MapPin } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { CarouselDemo } from "@/components/CarouselDemo";
+import {
+  Wifi,
+  Droplets, // For Pool
+  Dumbbell,
+  Coffee,
+  Flower2, // For Spa
+  Car,
+  Plane,
+  Wine,
+  Utensils,
+  Clock,
+  Briefcase,
+  Thermometer,
+  Dog,
+} from "lucide-react";
 const page = () => {
+  const AmenityIcon = ({ amenity }: { amenity: string }) => {
+    switch (amenity) {
+      case "Free WiFi":
+        return <Wifi size={25} className="text-primary-light" />;
+      case "Pool":
+        return <Droplets size={25} className="text-primary-light" />; // Water droplets for pool
+      case "Gym":
+        return <Dumbbell size={25} className="text-primary-light" />;
+      case "Breakfast":
+        return <Coffee size={25} className="text-primary-light" />;
+      case "Spa":
+        return <Flower2 size={25} className="text-primary-light" />; // Flower for spa/relaxation
+      case "Parking":
+        return <Car size={25} className="text-primary-light" />;
+      case "Airport Shuttle":
+        return <Plane size={25} className="text-primary-light" />;
+      case "Bar":
+        return <Wine size={25} className="text-primary-light" />;
+      case "Restaurant":
+        return <Utensils size={25} className="text-primary-light" />;
+      case "24/7 Front Desk":
+        return <Clock size={25} className="text-primary-light" />;
+      case "Business Center":
+        return <Briefcase size={25} className="text-primary-light" />;
+      case "Sauna":
+        return <Thermometer size={25} className="text-primary-light" />;
+      case "Pet Friendly":
+        return <Dog size={25} className="text-primary-light" />;
+      default:
+        return null;
+    }
+  };
   const [hotel, setHotel] = useState<any>([]);
   const { id } = useParams();
   useEffect(() => {
@@ -49,6 +96,89 @@ const page = () => {
         <div className="space-y-4 my-8">
           <h1 className="text-2xl font-bold">About this hotel</h1>
           <p className="text-gray-700 leading-relaxed">{hotel.description}</p>
+        </div>
+        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+          <h2 className="font-bold text-2xl text-gray-800 mb-4">Amenities</h2>
+          
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+            {(hotel.amenities || [
+              "Free WiFi", 
+              "Breakfast", 
+              "Parking", 
+              "Pool", 
+              "Restaurant", 
+              "24/7 Front Desk",
+              "Gym",
+              "Spa"
+            ]).map((amenity, index) => (
+              <div 
+                key={index} 
+                className="flex items-center gap-3 p-3 rounded-lg border border-gray-100 hover:bg-gray-50 transition-colors"
+              >
+                <div className="bg-primary-light/10 p-2 rounded-md">
+                  <AmenityIcon amenity={amenity} />
+                </div>
+                <span className="text-gray-700 text-sm">{amenity}</span>
+              </div>
+            ))}
+          </div>
+          
+          <p className="text-sm text-gray-500 mt-4">
+            Additional amenities may be available. Please contact the hotel for more information.
+          </p>
+        </div>
+        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-bold text-2xl text-gray-800">Guest Reviews</h2>
+            <div className="flex items-center gap-1 bg-primary-light text-white px-3 py-1 rounded-lg">
+              <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+              </svg>
+              <span className="font-bold">{hotel.rating || "4.5"}</span>
+            </div>
+          </div>
+          
+          <div className="space-y-4">
+            {hotel.reviews && hotel.reviews.length > 0 ? (
+              hotel.reviews.slice(0, 3).map((review, index) => (
+                <div key={index} className="p-4 bg-gray-50 rounded-lg">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-8 h-8 bg-gray-300 rounded-full overflow-hidden flex items-center justify-center text-gray-600 font-medium">
+                      {review.name ? review.name.charAt(0) : "G"}
+                    </div>
+                    <div>
+                      <p className="font-medium">{review.name || "Guest"}</p>
+                      <p className="text-xs text-gray-500">{review.date || "Recent stay"}</p>
+                    </div>
+                    <div className="ml-auto flex">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <svg 
+                          key={star} 
+                          className={`w-4 h-4 ${star <= (review.rating || 5) ? "text-yellow-400" : "text-gray-300"} fill-current`} 
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                        </svg>
+                      ))}
+                    </div>
+                  </div>
+                  <p className="text-gray-700 text-sm">
+                    "{review.review || "Great experience at this hotel!"}"
+                  </p>
+                </div>
+              ))
+            ) : (
+              <div className="p-4 bg-gray-50 rounded-lg text-center">
+                <p className="text-gray-600">No reviews yet. Be the first to review this hotel!</p>
+              </div>
+            )}
+            
+            {hotel.reviews && hotel.reviews.length > 3 && (
+              <button className="w-full py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+                View All {hotel.reviews.length} Reviews
+              </button>
+            )}
+          </div>
         </div>
       </article>
       <article className="sticky top-16 px-4 py-4 border border-zinc-300 shadow-xl rounded-lg bg-white h-fit">
@@ -144,7 +274,7 @@ const page = () => {
                 <img src="/check.svg" alt="check mark" className="w-4" />
                 <p>Free cancellation up to 48 hours before check-in</p>
               </div>
-              <div className="flex items-center space-x-1">
+              <div className="flex items-center space-x-1 text-sm">
                 <img src="/check.svg" alt="check mark" className="w-4" />
                 <p>Pay at the property available</p>
               </div>
