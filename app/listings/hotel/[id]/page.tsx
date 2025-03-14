@@ -6,7 +6,10 @@ import { MapPin } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { CarouselDemo } from "@/components/CarouselDemo";
+import { useBookingsStore } from "@/lib/store";
+
 import {
+  Star,
   Wifi,
   Droplets, // For Pool
   Dumbbell,
@@ -70,13 +73,58 @@ const page = () => {
   }, []);
   const taxes = Number((hotel.price * 0.2).toFixed(2));
   const priceBeforeTaxes = Number(hotel.price * 5);
+  const [checkIn, setCheckIn] = useState("");
+  const [checkOut, setCheckOut] = useState("");
+  const [guests, setGuests] = useState("1 Adult");
+  const [roomType, setRoomType] = useState("standard");
+  const setBookingData = useBookingsStore<any>((state) => state.addBooking);
+
+  const getBookingData = (e: any) => {
+    e.preventDefault();
+    if (checkIn === "" || checkOut === "" || guests === "" || roomType === "") {
+      alert("Please fill in all fields");
+      return;
+    }
+    const checkInDate = new Date(checkIn);
+    const checkOutDate = new Date(checkOut);
+    if (checkInDate >= checkOutDate) {
+      alert("Check-out date must be after check-in date");
+      return;
+    } else if (
+      (checkOutDate.getTime() - checkInDate.getTime()) / (1000 * 3600 * 24) >
+      5
+    ) {
+      alert("Maximum stay is 5 nights");
+      return;
+    } else if (checkOutDate <= checkInDate) {
+      alert("Check-out date must be after check-in date");
+    }
+    const bookingData = {
+      hotelId: id,
+      checkIn,
+      checkOut,
+      guests,
+      roomType,
+      price: priceBeforeTaxes + taxes,
+      hotelName: hotel.name,
+      hotelLocation: hotel.location,
+      hotelRating: hotel.rating,
+      hotelImage: hotel.images?.images?.[0],
+    };
+
+    setBookingData(bookingData);
+    alert("Booking data: " + JSON.stringify(bookingData));
+  };
   return (
     <section className="flex justify-center space-x-16">
       <article className="w-[1000px]">
         <div className="flex justify-between items-center">
           <div className="space-y-2">
             <h1 className="font-bold text-4xl">{hotel.name}</h1>
-            <p>({hotel.rating}) 125 Reviews</p>
+            <div className="text-primary-light flex items-center bg-card-light/20 border border-action-light w-fit rounded-lg px-2 py-1 space-x-1">
+              <Star size={15} />
+              <p>{hotel.rating}</p>
+            </div>
             <div className="flex items-center space-x-0.5 opacity-70">
               <MapPin size={15} />
               <h2 className="text-sm">{hotel.location}</h2>
@@ -90,7 +138,7 @@ const page = () => {
             <p>Includes taxes and fees</p>
           </div>
         </div>
-        <div className="max-w-[1000px] my-8 rounded-lg shadow-lg">
+        <div className="max-w-[1000px] mt-4 mb-8 rounded-lg shadow-lg">
           <CarouselDemo images={hotel.images?.images || []} />
         </div>
         <div className="space-y-4 my-8">
@@ -99,21 +147,12 @@ const page = () => {
         </div>
         <div className="bg-white rounded-lg shadow-md p-6 mb-8">
           <h2 className="font-bold text-2xl text-gray-800 mb-4">Amenities</h2>
-          
+
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-            {(hotel.amenities || [
-              "Free WiFi", 
-              "Breakfast", 
-              "Parking", 
-              "Pool", 
-              "Restaurant", 
-              "24/7 Front Desk",
-              "Gym",
-              "Spa"
-            ]).map((amenity, index) => (
-              <div 
-                key={index} 
-                className="flex items-center gap-3 p-3 rounded-lg border border-gray-100 hover:bg-gray-50 transition-colors"
+            {hotel.amenities?.map((amenity: any, index: number) => (
+              <div
+                key={index}
+                className="flex items-center gap-3 p-3 rounded-lg border bg-card-light/50 border-gray-100 hover:bg-card-light/30 transition-colors"
               >
                 <div className="bg-primary-light/10 p-2 rounded-md">
                   <AmenityIcon amenity={amenity} />
@@ -122,25 +161,18 @@ const page = () => {
               </div>
             ))}
           </div>
-          
+
           <p className="text-sm text-gray-500 mt-4">
-            Additional amenities may be available. Please contact the hotel for more information.
+            Additional amenities may be available. Please contact the hotel for
+            more information.
           </p>
         </div>
         <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="font-bold text-2xl text-gray-800">Guest Reviews</h2>
-            <div className="flex items-center gap-1 bg-primary-light text-white px-3 py-1 rounded-lg">
-              <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-              </svg>
-              <span className="font-bold">{hotel.rating || "4.5"}</span>
-            </div>
-          </div>
-          
+          <h2 className="font-bold text-2xl text-gray-800">Guest Reviews</h2>
+
           <div className="space-y-4">
             {hotel.reviews && hotel.reviews.length > 0 ? (
-              hotel.reviews.slice(0, 3).map((review, index) => (
+              hotel.reviews.slice(0, 3).map((review: any, index: number) => (
                 <div key={index} className="p-4 bg-gray-50 rounded-lg">
                   <div className="flex items-center gap-2 mb-2">
                     <div className="w-8 h-8 bg-gray-300 rounded-full overflow-hidden flex items-center justify-center text-gray-600 font-medium">
@@ -148,41 +180,27 @@ const page = () => {
                     </div>
                     <div>
                       <p className="font-medium">{review.name || "Guest"}</p>
-                      <p className="text-xs text-gray-500">{review.date || "Recent stay"}</p>
+                      <p className="text-xs text-gray-500">
+                        {review.date || "Recent stay"}
+                      </p>
                     </div>
-                    <div className="ml-auto flex">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <svg 
-                          key={star} 
-                          className={`w-4 h-4 ${star <= (review.rating || 5) ? "text-yellow-400" : "text-gray-300"} fill-current`} 
-                          viewBox="0 0 24 24"
-                        >
-                          <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                        </svg>
-                      ))}
-                    </div>
+                    <div className="ml-auto"></div>
                   </div>
-                  <p className="text-gray-700 text-sm">
-                    "{review.review || "Great experience at this hotel!"}"
-                  </p>
+                  <p className="text-gray-700 text-sm">"{review.review}"</p>
                 </div>
               ))
             ) : (
               <div className="p-4 bg-gray-50 rounded-lg text-center">
-                <p className="text-gray-600">No reviews yet. Be the first to review this hotel!</p>
+                <p className="text-gray-600">
+                  No reviews yet. Be the first to review this hotel!
+                </p>
               </div>
-            )}
-            
-            {hotel.reviews && hotel.reviews.length > 3 && (
-              <button className="w-full py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
-                View All {hotel.reviews.length} Reviews
-              </button>
             )}
           </div>
         </div>
       </article>
       <article className="sticky top-16 px-4 py-4 border border-zinc-300 shadow-xl rounded-lg bg-white h-fit">
-        <form>
+        <form onSubmit={getBookingData}>
           <div className="space-y-2">
             <h1 className="font-bold text-2xl">Book this hotel</h1>
             <p className="opacity-60">Select your dates and guests</p>
@@ -195,6 +213,8 @@ const page = () => {
                     type="date"
                     placeholder="Mar 15"
                     className="border border-zinc-300 focus:ring-2 ring-action-light outline-none transition-all duration-200 ease-out w-full"
+                    value={checkIn}
+                    onChange={(e) => setCheckIn(e.target.value)}
                   />
                 </div>
               </div>
@@ -202,6 +222,8 @@ const page = () => {
                 <h2>Check-out</h2>
                 <div className="flex items-center relative">
                   <Input
+                    value={checkOut}
+                    onChange={(e) => setCheckOut(e.target.value)}
                     required
                     type="date"
                     placeholder="Mar 20"
@@ -214,16 +236,18 @@ const page = () => {
               <h2>Guests</h2>
               <div>
                 <select
+                  value={guests}
+                  onChange={(e) => setGuests(e.target.value)}
                   name="guests"
                   id="guests"
                   className="rounded-lg p-2 border border-zinc-300 focus:ring-2 ring-action-light outline-none transition-all duration-200 ease-out w-full"
                 >
-                  <option value="oneAdult">1 Adult</option>
-                  <option value="twoeAdult">2 Adults</option>
-                  <option value="threeAdult">3 Adults</option>
-                  <option value="fourAdult">4 Adults</option>
-                  <option value="twoAdultsOneChild">2 Adults, 1 Child</option>
-                  <option value="twoAdultsTwoChildren">
+                  <option value="1 Adult">1 Adult</option>
+                  <option value="2 Adults">2 Adults</option>
+                  <option value="3 Adults">3 Adults</option>
+                  <option value="4 Adults">4 Adults</option>
+                  <option value="2 Adults, 1 Child">2 Adults, 1 Child</option>
+                  <option value="2 Adults, 2 Children">
                     2 Adults, 2 Children
                   </option>
                 </select>
@@ -233,14 +257,16 @@ const page = () => {
               <h2>Room Type</h2>
               <div>
                 <select
+                  value={roomType}
+                  onChange={(e) => setRoomType(e.target.value)}
                   name="roomType"
                   id="roomType"
                   className="rounded-lg p-2 border border-zinc-300 focus:ring-2 ring-action-light outline-none transition-all duration-200 ease-out w-full"
                 >
-                  <option value="standard">Standard Room</option>
-                  <option value="delux">Delux Room</option>
-                  <option value="executive">Executive Room</option>
-                  <option value="family">Family Room</option>
+                  <option value="Standard Room">Standard Room</option>
+                  <option value="Delux Room<">Delux Room</option>
+                  <option value="Executive Room">Executive Room</option>
+                  <option value="Family Room">Family Room</option>
                 </select>
               </div>
             </div>

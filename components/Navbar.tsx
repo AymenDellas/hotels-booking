@@ -26,7 +26,7 @@ const Navbar = () => {
               <Link href="/listings">Hotels</Link>
             </li>
             <li className="hover:text-primary-light transition-colors duration-200 ease-out ">
-              <Link href="/">Bookings</Link>
+              <Link href="/bookings">Bookings</Link>
             </li>
             <li className="hover:text-primary-light transition-colors duration-200 ease-out ">
               <Link href="/">Contacts</Link>
