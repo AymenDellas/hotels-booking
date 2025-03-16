@@ -3,7 +3,18 @@ import React, { useState, useEffect } from "react";
 import { MapPin } from "lucide-react";
 
 const BookingsPage = () => {
-  const [bookings, setBookings] = useState([]);
+  interface Booking {
+    hotelImage: string;
+    hotelName: string;
+    hotelLocation: string;
+    hotelRating: string;
+    checkIn: string;
+    checkOut: string;
+    guests: number;
+    roomType: string;
+  }
+
+  const [bookings, setBookings] = useState<Booking[]>([]);
 
   // Load bookings from localStorage when component mounts
   useEffect(() => {
@@ -21,17 +32,19 @@ const BookingsPage = () => {
   }, []);
 
   // Function to cancel a booking
-  const handleCancelBooking = (indexToRemove) => {
+  const handleCancelBooking = (indexToRemove: number) => {
     // Create a new array without the booking at the specified index
-    const updatedBookings = bookings.filter((_, index) => index !== indexToRemove);
-    
+    const updatedBookings = bookings.filter(
+      (_, index) => index !== indexToRemove
+    );
+
     // Update state
     setBookings(updatedBookings);
-    
+
     // Save to localStorage - maintain the same structure Zustand was using
     const dataToStore = {
       state: { bookings: updatedBookings },
-      version: 0
+      version: 0,
     };
     localStorage.setItem("bookings-storage", JSON.stringify(dataToStore));
   };
@@ -39,7 +52,7 @@ const BookingsPage = () => {
   return (
     <div className="text-primary-light mx-8 md:mx-20 xl:mx-36 2xl:mx-48">
       <h1 className="text-2xl font-bold my-6">Your Bookings</h1>
-      
+
       {bookings.length > 0 ? (
         <div className="space-y-4">
           {bookings.map((booking, index) => (
@@ -70,7 +83,7 @@ const BookingsPage = () => {
                   </div>
                   <p>{booking.guests}</p>
                   <p>{booking.roomType}</p>
-                  
+
                   {/* Cancel booking button */}
                   <button
                     onClick={() => handleCancelBooking(index)}
@@ -85,9 +98,11 @@ const BookingsPage = () => {
         </div>
       ) : (
         <div className="text-center py-12 bg-gray-50 rounded-lg">
-          <p className="text-gray-600">No bookings yet. Check out our hotel listings!</p>
-          <a 
-            href="/listings" 
+          <p className="text-gray-600">
+            No bookings yet. Check out our hotel listings!
+          </p>
+          <a
+            href="/listings"
             className="mt-4 inline-block bg-primary-light text-white px-4 py-2 rounded-md hover:bg-primary-light/90 transition-colors"
           >
             Browse Hotels
