@@ -1,36 +1,71 @@
 import React from "react";
 import "./globals.css";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Search, MapPin } from "lucide-react";
+
+import { MapPin, Star } from "lucide-react";
 import { whyChooseUs } from "@/lib/data";
 
 import FeaturedHotels from "@/components/FeaturedHotels";
 import Link from "next/link";
+
 const page = () => {
   return (
     <main className="relative overflow-hidden">
-      <section>
-        <div className="mx-12 max-lg:mx-4 mt-10 mb-20 relative">
-          <div
-            style={{
-              backgroundImage: `linear-gradient(to bottom, rgba(96, 63, 38, 0.3), rgba(108, 78, 49, 0.4)), url(/5.jpg)`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-            }}
-            className="w-[70%] max-lg:w-[90%] h-[650px] max-lg:h-[400px] object-cover rounded-xl relative mx-auto z-0 p-12"
-          >
-            <div className="flex flex-col items-center p-4 space-y-4 rounded-xl backdrop-blur-xl w-fit mx-auto text-text-light border border-text-light/40">
-              <h1 className="font-bold text-6xl max-lg:text-3xl">
-                Your Next Escape Awaits
-              </h1>
-              <p className="text-2xl max-lg:text-lg">
-                From cozy stays to luxury retreats—find the perfect place to
-                stay for your next adventure.
-              </p>
-              <Button className="my-4 text-lg text-text-light bg-primary-light cursor-pointer hover:bg-primary-light/90 transition-colors duration-200 ease-out px-8 py-6">
-                <Link href="/listings">Explore Hotels</Link>
-              </Button>
+      <section
+        className="flex items-center justify-center px-2 py-20 lg:py-48 bg-cover bg-center"
+        style={{
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/5.jpg)`,
+        }}
+      >
+        <div className="flex flex-col items-center space-y-4 text-text-light dark:text-text-dark mt-12 lg:mt-0">
+          <div className="rounded-full bg-primary-dark/20 p-3 flex items-center space-x-1 w-fit">
+            <Star size={20} />
+            <p>Featured Destinations for 2025</p>
+          </div>
+          <h1 className="text-3xl lg:text-6xl font-bold">
+            Discover Your Perfect Stay
+          </h1>
+          <p className="lg:text-lg lg:w-[70%] text-center">
+            Luxury accommodations, exclusive deals, and unforgettable
+            experiences await at destinations worldwide.
+          </p>
+          <Button className="my-4 text-lg text-text-light bg-primary-light cursor-pointer hover:bg-primary-light transition-colors duration-200 ease-out px-8 py-6">
+            <Link href="/listings">Browse Hotels</Link>
+          </Button>
+          {/* <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 place-content-center mx-auto justify-center space-y-2 lg:space-y-0 lg:flex-row lg:items-center space-x-4">
+            <div className="flex flex-col items-center bg-primary-light p-7 rounded-lg w-[170px] lg:w-[200px] justify-center text-center">
+              <h2 className="text-xl font-bold">+100</h2>
+              <p>Luxury Hotels</p>
+            </div>
+            <div className="flex flex-col items-center bg-primary-light p-7 rounded-lg w-[170px] lg:w-[200px] justify-center text-center">
+              <h2 className="text-xl font-bold">+100</h2>
+              <p>Destinations</p>
+            </div>
+            <div className="flex flex-col items-center bg-primary-light p-7 rounded-lg w-[170px] lg:w-[200px] justify-center text-center">
+              <h2 className="text-xl font-bold">24/7</h2>
+              <p>Support</p>
+            </div>
+          </div> */}
+          <div className="grid grid-cols-3 lg:grid-cols-5 gap-2  space-x-4 mt-4 ">
+            <div className="flex items-center space-x-0.5 opacity-70 bg-text-light/20 rounded-full p-2 justify-center">
+              <MapPin className="" size={15} />
+              <h2 className="text-sm ">Paris</h2>
+            </div>
+            <div className="flex items-center space-x-0.5 opacity-70 bg-text-light/20 rounded-full p-2 justify-center">
+              <MapPin className="" size={15} />
+              <h2 className="text-sm ">New York</h2>
+            </div>
+            <div className="flex items-center space-x-0.5 opacity-70 bg-text-light/20 rounded-full p-2 justify-center">
+              <MapPin className="" size={15} />
+              <h2 className="text-sm ">Tokyo</h2>
+            </div>
+            <div className="flex items-center space-x-0.5 opacity-70 bg-text-light/20 rounded-full p-2 justify-center">
+              <MapPin className="" size={15} />
+              <h2 className="text-sm ">London</h2>
+            </div>
+            <div className="flex items-center space-x-0.5 opacity-70 bg-text-light/20 rounded-full p-2 justify-center">
+              <MapPin className="" size={15} />
+              <h2 className="text-sm ">Dubai</h2>
             </div>
           </div>
         </div>

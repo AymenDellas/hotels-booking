@@ -18,7 +18,7 @@ const FeaturedHotels = () => {
   }, []);
 
   return (
-    <section className="flex flex-col items-center text-primary-light dark:text-text-dark">
+    <section className="flex flex-col items-center text-primary-light dark:text-text-dark my-8">
       <div className=" text-center space-y-2">
         <h1 className="font-bold text-4xl">Top Picks for You</h1>
         <em className="text-sm">

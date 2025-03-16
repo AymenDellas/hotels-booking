@@ -23,3 +23,10 @@
   --color-action-dark: #c87137;
   --color-border-dark: #8c5e3c;
 }
+:root {
+  --image-filter: brightness(0.7) contrast(1.1);
+}
+
+.dark {
+  --image-filter: brightness(0.75) contrast(1.25) saturate(0.75);
+}
