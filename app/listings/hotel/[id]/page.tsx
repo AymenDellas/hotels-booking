@@ -24,6 +24,7 @@ import {
   Thermometer,
   Dog,
 } from "lucide-react";
+import { ESLINT_DEFAULT_DIRS } from "next/dist/lib/constants";
 const page = () => {
   const AmenityIcon = ({ amenity }: { amenity: string }) => {
     switch (amenity) {
@@ -71,33 +72,34 @@ const page = () => {
     };
     getHotel();
   }, []);
-  const taxes = Number((hotel.price * 0.2).toFixed(2));
-  const priceBeforeTaxes = Number(hotel.price * 5);
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [guests, setGuests] = useState("1 Adult");
   const [roomType, setRoomType] = useState("standard");
+  const [message, setMessage] = useState("");
+  const [nights, setNights] = useState(1);
   const setBookingData = useBookingsStore<any>((state) => state.addBooking);
 
+  const checkInDate = new Date(checkIn).getTime();
+  const checkOutDate = new Date(checkOut).getTime();
   const getBookingData = (e: any) => {
     e.preventDefault();
     if (checkIn === "" || checkOut === "" || guests === "" || roomType === "") {
-      alert("Please fill in all fields");
+      setMessage("Please fill in all fields");
       return;
     }
-    const checkInDate = new Date(checkIn);
-    const checkOutDate = new Date(checkOut);
     if (checkInDate >= checkOutDate) {
-      alert("Check-out date must be after check-in date");
+      setMessage("Check-out date must be after check-in date");
       return;
-    } else if (
-      (checkOutDate.getTime() - checkInDate.getTime()) / (1000 * 3600 * 24) >
-      5
-    ) {
-      alert("Maximum stay is 5 nights");
+    } else if ((checkOutDate - checkInDate) / (1000 * 3600 * 24) > 5) {
+      setMessage("Maximum stay is 5 nights");
       return;
     } else if (checkOutDate <= checkInDate) {
-      alert("Check-out date must be after check-in date");
+      setMessage("Check-out date must be after check-in date");
+      return;
+    } else if (checkInDate == checkOutDate) {
+      setMessage("Minimum stay is 1 night");
+      return;
     }
     const bookingData = {
       hotelId: id,
@@ -115,13 +117,24 @@ const page = () => {
     setBookingData(bookingData);
     alert("Booking data: " + JSON.stringify(bookingData));
   };
+  const taxes = Number((hotel.price * 0.2).toFixed(2));
+  const priceBeforeTaxes = Number(hotel.price * nights);
+  useEffect(() => {
+    if (checkIn && checkOut) {
+      const timeDiff = checkOutDate - checkInDate;
+      const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+      if (daysDiff > 0 && daysDiff <= 5) {
+        setNights(daysDiff);
+      }
+    }
+  }, [checkIn, checkOut, checkInDate, checkOutDate]);
   return (
-    <section className="flex justify-center space-x-16">
+    <section className="flex justify-center space-x-16 text-primary-light dark:text-text-dark">
       <article className="w-[1000px]">
         <div className="flex justify-between items-center">
           <div className="space-y-2">
             <h1 className="font-bold text-4xl">{hotel.name}</h1>
-            <div className="text-primary-light flex items-center bg-card-light/20 border border-action-light w-fit rounded-lg px-2 py-1 space-x-1">
+            <div className="text-primary-light dark:text-text-dark flex items-center bg-card-light/20 border border-action-light w-fit rounded-lg px-2 py-1 space-x-1">
               <Star size={15} />
               <p>{hotel.rating}</p>
             </div>
@@ -141,9 +154,11 @@ const page = () => {
         <div className="max-w-[1000px] mt-4 mb-8 rounded-lg shadow-lg">
           <CarouselDemo images={hotel.images?.images || []} />
         </div>
-        <div className="space-y-4 my-8">
+        <div className="space-y-4 my-8 ">
           <h1 className="text-2xl font-bold">About this hotel</h1>
-          <p className="text-gray-700 leading-relaxed">{hotel.description}</p>
+          <p className="text-gray-700 dark:text-text-dark/50 leading-relaxed">
+            {hotel.description}
+          </p>
         </div>
         <div className="bg-white rounded-lg shadow-md p-6 mb-8">
           <h2 className="font-bold text-2xl text-gray-800 mb-4">Amenities</h2>
@@ -172,8 +187,11 @@ const page = () => {
 
           <div className="space-y-4">
             {hotel.reviews && hotel.reviews.length > 0 ? (
-              hotel.reviews.slice(0, 3).map((review: any, index: number) => (
-                <div key={index} className="p-4 bg-gray-50 rounded-lg">
+              hotel.reviews.map((review: any, index: number) => (
+                <div
+                  key={index}
+                  className="p-4 bg-gray-50 rounded-lg text-primary-light"
+                >
                   <div className="flex items-center gap-2 mb-2">
                     <div className="w-8 h-8 bg-gray-300 rounded-full overflow-hidden flex items-center justify-center text-gray-600 font-medium">
                       {review.name ? review.name.charAt(0) : "G"}
@@ -199,7 +217,7 @@ const page = () => {
           </div>
         </div>
       </article>
-      <article className="sticky top-16 px-4 py-4 border border-zinc-300 shadow-xl rounded-lg bg-white h-fit">
+      <article className="sticky top-16 px-4 py-4 border border-zinc-300 shadow-xl rounded-lg bg-white h-fit text-primary-dark">
         <form onSubmit={getBookingData}>
           <div className="space-y-2">
             <h1 className="font-bold text-2xl">Book this hotel</h1>
@@ -209,7 +227,6 @@ const page = () => {
                 <h2>Check-in</h2>
                 <div className="flex items-center relative">
                   <Input
-                    required
                     type="date"
                     placeholder="Mar 15"
                     className="border border-zinc-300 focus:ring-2 ring-action-light outline-none transition-all duration-200 ease-out w-full"
@@ -224,7 +241,6 @@ const page = () => {
                   <Input
                     value={checkOut}
                     onChange={(e) => setCheckOut(e.target.value)}
-                    required
                     type="date"
                     placeholder="Mar 20"
                     className="border border-zinc-300 focus:ring-2 ring-action-light outline-none transition-all duration-200 ease-out w-full"
@@ -270,6 +286,13 @@ const page = () => {
                 </select>
               </div>
             </div>
+            {message && (
+              <div>
+                <p className="text-red-500 bg-red-100 border border-red-300 rounded-lg p-1 text-center">
+                  {message}
+                </p>
+              </div>
+            )}
             <Button
               className="text-text-light bg-primary-light cursor-pointer hover:bg-primary-light/90 transition-colors duration-200 ease-out my-2 w-full p-6"
               type="submit"
@@ -282,7 +305,9 @@ const page = () => {
             </p>
             <hr className="text-zinc-300" />
             <div className="flex items-center justify-between">
-              <p className="text-gray-600">${hotel.price} x 5 nights</p>
+              <p className="text-gray-600">
+                ${hotel.price} x {nights} nights
+              </p>
               <p className="font-bold">${priceBeforeTaxes}</p>
             </div>
 

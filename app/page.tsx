@@ -4,15 +4,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, MapPin } from "lucide-react";
 import { whyChooseUs } from "@/lib/data";
-import HotelSeeding from "@/components/HotelSeeding";
+
 import FeaturedHotels from "@/components/FeaturedHotels";
 import Link from "next/link";
 const page = () => {
   return (
-    <main className="relative overflow-hidden  ">
+    <main className="relative overflow-hidden">
       <section>
-        {" "}
-        <div className=" mx-12 max-lg:mx-4 mt-10 mb-20 relative">
+        <div className="mx-12 max-lg:mx-4 mt-10 mb-20 relative">
           <div
             style={{
               backgroundImage: `linear-gradient(to bottom, rgba(96, 63, 38, 0.3), rgba(108, 78, 49, 0.4)), url(/5.jpg)`,
@@ -25,40 +24,20 @@ const page = () => {
               <h1 className="font-bold text-6xl max-lg:text-3xl">
                 Your Next Escape Awaits
               </h1>
-              <p className="text-2xl max-lg:text-lg ">
+              <p className="text-2xl max-lg:text-lg">
                 From cozy stays to luxury retreats—find the perfect place to
                 stay for your next adventure.
               </p>
-            </div>
-            <div className="-bottom-8 max-lg:-bottom-20 right-0 left-0 absolute flex max-lg:flex-col max-lg:space-y-2 justify-center w-fit mx-auto rounded-xl text-primary-light shadow-2xl p-4 space-x-2  bg-card-light">
-              <div className="flex items-center relative ">
-                <MapPin className="absolute left-1" size={20} />
-                <Input
-                  required
-                  type="text"
-                  placeholder="Where do you want to go?"
-                  className="pl-7 placeholder:text-secondary-light selection:bg-primary-light/50"
-                />
-              </div>
-              <div className="flex items-center relative ">
-                <Search className="absolute left-1" size={20} />
-                <Input
-                  type="text"
-                  placeholder="Search by hotel name (optional)"
-                  className="pl-7 placeholder:text-secondary-light selection:bg-primary-light/50 "
-                />
-              </div>
-
-              <Button className="text-text-light bg-primary-light cursor-pointer hover:bg-primary-light/90 transition-colors duration-200 ease-out">
-                Find Stays
+              <Button className="my-4 text-lg text-text-light bg-primary-light cursor-pointer hover:bg-primary-light/90 transition-colors duration-200 ease-out px-8 py-6">
+                <Link href="/listings">Explore Hotels</Link>
               </Button>
             </div>
           </div>
         </div>
       </section>
       <FeaturedHotels />
-      <section className="flex flex-col items-center ">
-        <h1 className="font-bold text-4xl text-primary-light">
+      <section className="flex flex-col items-center">
+        <h1 className="font-bold text-4xl text-primary-light dark:text-text-dark">
           Why Book With Us?
         </h1>
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-12 my-12">
@@ -68,7 +47,7 @@ const page = () => {
                 className="flex flex-col bg-white rounded-lg shadow-lg p-4 space-y-4 border border-border-light hover:-translate-y-1 transition-transform duration-300 ease-out"
                 key={index}
               >
-                <div className="flex items-center space-x-3 ">
+                <div className="flex items-center space-x-3">
                   <span className="p-5 rounded-lg bg-card-light border border-border-light shadow-2xl">
                     <reason.icon />
                   </span>
@@ -82,7 +61,7 @@ const page = () => {
       </section>
       <section className="mb-20">
         <div className="text-primary-light w-[70%] max-lg:w-[90%] mx-auto bg-card-light rounded-lg pt-8 flex flex-col items-center space-y-4 text-center px-4">
-          <h1 className="font-bold text-4xl ">Find Your Perfect Stay Today!</h1>
+          <h1 className="font-bold text-4xl">Find Your Perfect Stay Today!</h1>
           <em className="text-sm">
             Explore thousands of hotels worldwide and book your dream getaway
             now.
@@ -92,9 +71,6 @@ const page = () => {
             <Link href="/listings">Explore Hotels</Link>
           </Button>
         </div>
-      </section>
-      <section>
-        <HotelSeeding />
       </section>
     </main>
   );
