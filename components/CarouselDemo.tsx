@@ -23,8 +23,8 @@ export function CarouselDemo({ images = [] }) {
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselPrevious className="rounded-lg border border-border-light bg-primary-light text-text-light dark:bg-text-dark dark:text-primary-dark cursor-pointer hover:bg-primary-light/90  transition-colors duration-200 ease-out" />
-      <CarouselNext className="rounded-lg border border-border-light bg-primary-light text-text-light dark:bg-text-dark dark:text-primary-dark cursor-pointer hover:bg-primary-light/90 transition-colors duration-200 ease-out" />
+      <CarouselPrevious className="hidden lg:block rounded-lg border border-border-light bg-primary-light text-text-light dark:bg-text-dark dark:text-primary-dark cursor-pointer hover:bg-primary-light/90  transition-colors duration-200 ease-out" />
+      <CarouselNext className="hidden lg:block rounded-lg border border-border-light bg-primary-light text-text-light dark:bg-text-dark dark:text-primary-dark cursor-pointer hover:bg-primary-light/90 transition-colors duration-200 ease-out" />
     </Carousel>
   );
 }

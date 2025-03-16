@@ -26,9 +26,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="light">
+    <html lang="en" className="light ">
       <body
-        className={`${workSans.variable} ${workSans.className} ${geistMono.variable} antialiased bg-background-light text-foreground-light dark:text-foreground-dark dark:bg-background-dark`}
+        className={`${workSans.variable} ${workSans.className} ${geistMono.variable} antialiased bg-background-light text-foreground-light dark:text-foreground-dark dark:bg-background-dark transition-colors duration-200 ease-out`}
       >
         <Navbar />
         {children}

@@ -129,8 +129,8 @@ const page = () => {
     }
   }, [checkIn, checkOut, checkInDate, checkOutDate]);
   return (
-    <section className="flex justify-center space-x-16 text-primary-light dark:text-text-dark">
-      <article className="w-[1000px]">
+    <section className="flex flex-col md:flex-row justify-center md:space-x-16 text-primary-light dark:text-text-dark px-4 md:px-0">
+      <article className="w-full lg:w-[1000px]">
         <div className="flex justify-between items-center">
           <div className="space-y-2">
             <h1 className="font-bold text-4xl">{hotel.name}</h1>
@@ -146,7 +146,7 @@ const page = () => {
           <div className="space-y-2">
             <div className="flex items-end space-x-1">
               <h1 className="font-bold text-4xl">${hotel.price}</h1>{" "}
-              <span>/ night</span>
+              <span>/night</span>
             </div>
             <p>Includes taxes and fees</p>
           </div>
