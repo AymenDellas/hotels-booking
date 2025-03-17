@@ -25,13 +25,13 @@ const Navbar = () => {
         </div>
         <div>
           <ul className="flex space-x-4 mx-8">
-            <li className="hover:text-primary-light transition-colors duration-200 ease-out ">
+            <li className="hover:text-text-light/50 dark:hover:text-primary-dark/50 transition-colors duration-200 ease-out ">
               <Link href="/">Home</Link>
             </li>
-            <li className="hover:text-primary-light transition-colors duration-200 ease-out ">
+            <li className="hover:text-text-light/50 dark:hover:text-primary-dark/50 transition-colors duration-200 ease-out ">
               <Link href="/listings">Hotels</Link>
             </li>
-            <li className="hover:text-primary-light transition-colors duration-200 ease-out ">
+            <li className="hover:text-text-light/50 dark:hover:text-primary-dark/50 transition-colors duration-200 ease-out ">
               <Link href="/bookings">Bookings</Link>
             </li>
           </ul>
@@ -39,7 +39,7 @@ const Navbar = () => {
         <div>
           <Button
             onClick={toggleTheme}
-            className={`bg-primary-light dark:bg-primary-dark text-text-dark py-3 rounded-lg relative cursor-pointer  w-12 dark:hover:bg-primary-dark/90 hover:bg-primary-light/90 transition-colors duration-200 ease-out`}
+            className={` text-text-dark dark:text-primary-dark py-3 rounded-lg relative cursor-pointer   transition-colors duration-200 ease-out`}
           >
             <Moon
               className={`${

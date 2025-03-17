@@ -32,20 +32,7 @@ const page = () => {
           <Button className="my-4 text-lg text-text-light bg-primary-light cursor-pointer hover:bg-primary-light transition-colors duration-200 ease-out px-8 py-6">
             <Link href="/listings">Browse Hotels</Link>
           </Button>
-          {/* <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 place-content-center mx-auto justify-center space-y-2 lg:space-y-0 lg:flex-row lg:items-center space-x-4">
-            <div className="flex flex-col items-center bg-primary-light p-7 rounded-lg w-[170px] lg:w-[200px] justify-center text-center">
-              <h2 className="text-xl font-bold">+100</h2>
-              <p>Luxury Hotels</p>
-            </div>
-            <div className="flex flex-col items-center bg-primary-light p-7 rounded-lg w-[170px] lg:w-[200px] justify-center text-center">
-              <h2 className="text-xl font-bold">+100</h2>
-              <p>Destinations</p>
-            </div>
-            <div className="flex flex-col items-center bg-primary-light p-7 rounded-lg w-[170px] lg:w-[200px] justify-center text-center">
-              <h2 className="text-xl font-bold">24/7</h2>
-              <p>Support</p>
-            </div>
-          </div> */}
+
           <div className="grid grid-cols-3 lg:grid-cols-5 gap-2  space-x-4 mt-4 ">
             <div className="flex items-center space-x-0.5 opacity-70 bg-text-light/20 rounded-full p-2 justify-center">
               <MapPin className="" size={15} />

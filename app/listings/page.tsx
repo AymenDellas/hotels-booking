@@ -48,7 +48,7 @@ const page = () => {
     getfeaturedHotels();
   }, []);
   return (
-    <main className="mx-8 md:mx-20 xl:mx-36 2xl:mx-48 text-primary-light dark:text-text-dark">
+    <main className="mx-8 md:mx-20 xl:mx-36 2xl:mx-48 text-primary-light dark:text-text-dark pt-52 max-lg:pt-36">
       <div className=" text-center space-y-2 mb-12">
         <h1 className="font-bold text-4xl">Explore top-rated hotels</h1>
         <em className="text-sm">carefully selected for your perfect stay.</em>
@@ -149,7 +149,7 @@ const page = () => {
                 }}
                 className="min-h-[250px] w-full"
               >
-                <div className="flex items-center space-x-1 bg-white rounded-full px-1 float-right m-2 shadow-lg">
+                <div className="flex items-center space-x-1 bg-white rounded-full px-2  float-right m-2 shadow-lg">
                   <img
                     src="/star.svg"
                     alt="star"

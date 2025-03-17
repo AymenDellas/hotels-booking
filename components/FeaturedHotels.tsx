@@ -44,7 +44,7 @@ const FeaturedHotels = () => {
                     }}
                     className="min-h-[250px] max-h-[250px] w-full"
                   >
-                    <div className="flex items-center space-x-1 bg-white rounded-full px-1 float-right m-2 shadow-lg">
+                    <div className="flex items-center space-x-1 bg-white rounded-full px-2 float-right m-2 shadow-lg">
                       <img
                         src="/star.svg"
                         alt="star"

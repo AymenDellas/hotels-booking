@@ -129,7 +129,7 @@ const page = () => {
     }
   }, [checkIn, checkOut, checkInDate, checkOutDate]);
   return (
-    <section className="flex flex-col md:flex-row justify-center md:space-x-16 text-primary-light dark:text-text-dark px-4 md:px-0">
+    <section className="flex flex-col md:flex-row justify-center md:space-x-16 text-primary-light dark:text-text-dark px-4 md:px-0 pt-40 max-lg:pt-36">
       <article className="w-full lg:w-[1000px]">
         <div className="flex justify-between items-center">
           <div className="space-y-2">
@@ -217,7 +217,7 @@ const page = () => {
           </div>
         </div>
       </article>
-      <article className="sticky top-16 px-4 py-4 border border-zinc-300 shadow-xl rounded-lg bg-white h-fit text-primary-dark">
+      <article className="sticky top-16 px-4 py-4 border border-zinc-300 shadow-xl rounded-lg bg-white h-fit text-primary-dark mb-12">
         <form onSubmit={getBookingData}>
           <div className="space-y-2">
             <h1 className="font-bold text-2xl">Book this hotel</h1>
