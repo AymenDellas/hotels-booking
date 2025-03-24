@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useParams } from "next/navigation";
-import { MapPin } from "lucide-react";
+import { MapPin, CheckCircle } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { CarouselDemo } from "@/components/CarouselDemo";
@@ -80,7 +80,9 @@ const Page = () => {
   const [guests, setGuests] = useState("1 Adult");
   const [roomType, setRoomType] = useState("Standard Room");
   const [message, setMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const [nights, setNights] = useState(1);
+  const [isBooking, setIsBooking] = useState(false);
   const setBookingData = useBookingsStore<any>((state) => state.addBooking);
 
   const checkInDate = new Date(checkIn).getTime();
@@ -88,6 +90,11 @@ const Page = () => {
 
   const getBookingData = (e: React.FormEvent) => {
     e.preventDefault();
+    // Reset messages
+    setMessage("");
+    setSuccessMessage("");
+
+    // Validate form inputs
     if (checkIn === "" || checkOut === "" || guests === "" || roomType === "") {
       setMessage("Please fill in all fields");
       return;
@@ -106,6 +113,7 @@ const Page = () => {
       return;
     }
 
+    // Create booking data object
     const bookingData = {
       hotelId: id,
       checkIn,
@@ -119,8 +127,26 @@ const Page = () => {
       hotelImage: hotel.images?.images?.[0],
     };
 
-    setBookingData(bookingData);
-    alert("Booking data: " + JSON.stringify(bookingData));
+    // Set loading state
+    setIsBooking(true);
+
+    // Simulate API call with a timeout
+    setTimeout(() => {
+      // Store booking data
+      setBookingData(bookingData);
+
+      // Show success message
+      setSuccessMessage(
+        `Booking confirmed! Your ${roomType} has been reserved at ${
+          hotel.name
+        } from ${new Date(checkIn).toLocaleDateString()} to ${new Date(
+          checkOut
+        ).toLocaleDateString()}.`
+      );
+
+      // Reset loading state
+      setIsBooking(false);
+    }, 800);
   };
 
   const taxes = Number((hotel.price * 0.2).toFixed(2));
@@ -135,6 +161,13 @@ const Page = () => {
       }
     }
   }, [checkIn, checkOut, checkInDate, checkOutDate]);
+
+  // Clear success message when form inputs change
+  useEffect(() => {
+    if (successMessage) {
+      setSuccessMessage("");
+    }
+  }, [checkIn, checkOut, guests, roomType]);
 
   return (
     <section className="flex flex-col lg:flex-row justify-center items-start gap-6 text-primary-light dark:text-text-dark px-4 sm:px-6 lg:px-8 pt-24 md:pt-32 lg:pt-40 max-w-7xl mx-auto">
@@ -258,6 +291,14 @@ const Page = () => {
             <p className="text-sm opacity-60">Select your dates and guests</p>
           </div>
 
+          {/* Success message */}
+          {successMessage && (
+            <div className="bg-green-50 border border-green-200 rounded-lg p-3 text-green-700 flex items-start space-x-2 text-sm">
+              <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-green-500" />
+              <p>{successMessage}</p>
+            </div>
+          )}
+
           {/* Check-in/Check-out dates */}
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="w-full space-y-1">
@@ -320,19 +361,18 @@ const Page = () => {
 
           {/* Error message */}
           {message && (
-            <div>
-              <p className="text-red-500 bg-red-100 border border-red-300 rounded-lg p-2 text-center text-sm">
-                {message}
-              </p>
+            <div className="bg-red-50 border border-red-300 rounded-lg p-2 text-red-500 text-center text-sm">
+              {message}
             </div>
           )}
 
           {/* Reserve button */}
           <Button
-            className="text-text-light bg-primary-light cursor-pointer hover:bg-primary-light/90 transition-colors duration-200 ease-out w-full p-5 text-base"
+            className="text-text-light bg-primary-light cursor-pointer hover:bg-primary-light/90 transition-colors duration-200 ease-out w-full p-5 text-base disabled:opacity-70 disabled:cursor-not-allowed"
             type="submit"
+            disabled={isBooking}
           >
-            Reserve Now
+            {isBooking ? "Processing..." : "Reserve Now"}
           </Button>
 
           <p className="text-zinc-600 text-center text-xs sm:text-sm">
