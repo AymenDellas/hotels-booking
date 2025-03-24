@@ -50,7 +50,7 @@ const BookingsPage = () => {
   };
 
   return (
-    <div className="text-primary-light mx-8 md:mx-20 xl:mx-36 2xl:mx-48 pt-52 max-lg:pt-36">
+    <div className="text-primary-light dark:text-text-dark mx-8 md:mx-20 xl:mx-36 2xl:mx-48 pt-52 max-lg:pt-36">
       <h1 className="text-2xl font-bold py-6">Your Bookings</h1>
 
       {bookings.length > 0 ? (

@@ -11,10 +11,10 @@ import { useBookingsStore } from "@/lib/store";
 import {
   Star,
   Wifi,
-  Droplets, // For Pool
+  Droplets,
   Dumbbell,
   Coffee,
-  Flower2, // For Spa
+  Flower2,
   Car,
   Plane,
   Wine,
@@ -24,42 +24,44 @@ import {
   Thermometer,
   Dog,
 } from "lucide-react";
-import { ESLINT_DEFAULT_DIRS } from "next/dist/lib/constants";
-const page = () => {
+
+const Page = () => {
   const AmenityIcon = ({ amenity }: { amenity: string }) => {
     switch (amenity) {
       case "Free WiFi":
-        return <Wifi size={25} className="text-primary-light" />;
+        return <Wifi size={20} className="text-primary-light" />;
       case "Pool":
-        return <Droplets size={25} className="text-primary-light" />; // Water droplets for pool
+        return <Droplets size={20} className="text-primary-light" />;
       case "Gym":
-        return <Dumbbell size={25} className="text-primary-light" />;
+        return <Dumbbell size={20} className="text-primary-light" />;
       case "Breakfast":
-        return <Coffee size={25} className="text-primary-light" />;
+        return <Coffee size={20} className="text-primary-light" />;
       case "Spa":
-        return <Flower2 size={25} className="text-primary-light" />; // Flower for spa/relaxation
+        return <Flower2 size={20} className="text-primary-light" />;
       case "Parking":
-        return <Car size={25} className="text-primary-light" />;
+        return <Car size={20} className="text-primary-light" />;
       case "Airport Shuttle":
-        return <Plane size={25} className="text-primary-light" />;
+        return <Plane size={20} className="text-primary-light" />;
       case "Bar":
-        return <Wine size={25} className="text-primary-light" />;
+        return <Wine size={20} className="text-primary-light" />;
       case "Restaurant":
-        return <Utensils size={25} className="text-primary-light" />;
+        return <Utensils size={20} className="text-primary-light" />;
       case "24/7 Front Desk":
-        return <Clock size={25} className="text-primary-light" />;
+        return <Clock size={20} className="text-primary-light" />;
       case "Business Center":
-        return <Briefcase size={25} className="text-primary-light" />;
+        return <Briefcase size={20} className="text-primary-light" />;
       case "Sauna":
-        return <Thermometer size={25} className="text-primary-light" />;
+        return <Thermometer size={20} className="text-primary-light" />;
       case "Pet Friendly":
-        return <Dog size={25} className="text-primary-light" />;
+        return <Dog size={20} className="text-primary-light" />;
       default:
         return null;
     }
   };
+
   const [hotel, setHotel] = useState<any>([]);
   const { id } = useParams();
+
   useEffect(() => {
     const getHotel = async () => {
       const { data, error } = await supabase
@@ -71,18 +73,20 @@ const page = () => {
       if (error) console.error("Error fetching single hotel : ", error);
     };
     getHotel();
-  }, []);
+  }, [id]);
+
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [guests, setGuests] = useState("1 Adult");
-  const [roomType, setRoomType] = useState("standard");
+  const [roomType, setRoomType] = useState("Standard Room");
   const [message, setMessage] = useState("");
   const [nights, setNights] = useState(1);
   const setBookingData = useBookingsStore<any>((state) => state.addBooking);
 
   const checkInDate = new Date(checkIn).getTime();
   const checkOutDate = new Date(checkOut).getTime();
-  const getBookingData = (e: any) => {
+
+  const getBookingData = (e: React.FormEvent) => {
     e.preventDefault();
     if (checkIn === "" || checkOut === "" || guests === "" || roomType === "") {
       setMessage("Please fill in all fields");
@@ -97,10 +101,11 @@ const page = () => {
     } else if (checkOutDate <= checkInDate) {
       setMessage("Check-out date must be after check-in date");
       return;
-    } else if (checkInDate == checkOutDate) {
+    } else if (checkInDate === checkOutDate) {
       setMessage("Minimum stay is 1 night");
       return;
     }
+
     const bookingData = {
       hotelId: id,
       checkIn,
@@ -117,8 +122,10 @@ const page = () => {
     setBookingData(bookingData);
     alert("Booking data: " + JSON.stringify(bookingData));
   };
+
   const taxes = Number((hotel.price * 0.2).toFixed(2));
   const priceBeforeTaxes = Number(hotel.price * nights);
+
   useEffect(() => {
     if (checkIn && checkOut) {
       const timeDiff = checkOutDate - checkInDate;
@@ -128,12 +135,17 @@ const page = () => {
       }
     }
   }, [checkIn, checkOut, checkInDate, checkOutDate]);
+
   return (
-    <section className="flex flex-col md:flex-row justify-center md:space-x-16 text-primary-light dark:text-text-dark px-4 md:px-0 pt-40 max-lg:pt-36">
-      <article className="w-full lg:w-[1000px]">
-        <div className="flex justify-between items-center">
+    <section className="flex flex-col lg:flex-row justify-center items-start gap-6 text-primary-light dark:text-text-dark px-4 sm:px-6 lg:px-8 pt-24 md:pt-32 lg:pt-40 max-w-7xl mx-auto">
+      {/* Main content column */}
+      <article className="w-full lg:w-2/3">
+        {/* Hotel title and rating section */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
           <div className="space-y-2">
-            <h1 className="font-bold text-4xl">{hotel.name}</h1>
+            <h1 className="font-bold text-2xl sm:text-3xl md:text-4xl">
+              {hotel.name}
+            </h1>
             <div className="text-primary-light dark:text-text-dark flex items-center bg-card-light/20 border border-action-light w-fit rounded-lg px-2 py-1 space-x-1">
               <Star size={15} />
               <p>{hotel.rating}</p>
@@ -143,73 +155,93 @@ const page = () => {
               <h2 className="text-sm">{hotel.location}</h2>
             </div>
           </div>
-          <div className="space-y-2">
+          <div className="space-y-1 mt-2 sm:mt-0">
             <div className="flex items-end space-x-1">
-              <h1 className="font-bold text-4xl">${hotel.price}</h1>{" "}
-              <span>/night</span>
+              <h1 className="font-bold text-2xl sm:text-3xl md:text-4xl">
+                ${hotel.price}
+              </h1>
+              <span className="text-sm sm:text-base">/night</span>
             </div>
-            <p>Includes taxes and fees</p>
+            <p className="text-xs sm:text-sm">Includes taxes and fees</p>
           </div>
         </div>
-        <div className="max-w-[1000px] mt-4 mb-8 rounded-lg shadow-lg">
+
+        {/* Image carousel */}
+        <div className="w-full mb-8 rounded-lg shadow-lg overflow-hidden">
           <CarouselDemo images={hotel.images?.images || []} />
         </div>
-        <div className="space-y-4 my-8 ">
-          <h1 className="text-2xl font-bold">About this hotel</h1>
-          <p className="text-gray-700 dark:text-text-dark/50 leading-relaxed">
+
+        {/* Hotel description */}
+        <div className="space-y-4 mb-8">
+          <h2 className="text-xl sm:text-2xl font-bold">About this hotel</h2>
+          <p className="text-gray-700 dark:text-text-dark/50 leading-relaxed text-sm sm:text-base">
             {hotel.description}
           </p>
         </div>
-        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-          <h2 className="font-bold text-2xl text-gray-800 mb-4">Amenities</h2>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-            {hotel.amenities?.map((amenity: any, index: number) => (
+        {/* Amenities section */}
+        <div className="bg-white rounded-lg shadow-md p-4 sm:p-6 mb-8">
+          <h2 className="font-bold text-xl sm:text-2xl text-gray-800 mb-4">
+            Amenities
+          </h2>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+            {hotel.amenities?.map((amenity: string, index: number) => (
               <div
                 key={index}
-                className="flex items-center gap-3 p-3 rounded-lg border bg-card-light/50 border-gray-100 hover:bg-card-light/30 transition-colors"
+                className="flex items-center gap-2 p-2 sm:p-3 rounded-lg border bg-card-light/50 border-gray-100 hover:bg-card-light/30 transition-colors"
               >
-                <div className="bg-primary-light/10 p-2 rounded-md">
+                <div className="bg-primary-light/10 p-1.5 sm:p-2 rounded-md">
                   <AmenityIcon amenity={amenity} />
                 </div>
-                <span className="text-gray-700 text-sm">{amenity}</span>
+                <span className="text-gray-700 text-xs sm:text-sm">
+                  {amenity}
+                </span>
               </div>
             ))}
           </div>
 
-          <p className="text-sm text-gray-500 mt-4">
+          <p className="text-xs sm:text-sm text-gray-500 mt-4">
             Additional amenities may be available. Please contact the hotel for
             more information.
           </p>
         </div>
-        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-          <h2 className="font-bold text-2xl text-gray-800">Guest Reviews</h2>
+
+        {/* Reviews section */}
+        <div className="bg-white rounded-lg shadow-md p-4 sm:p-6 mb-8">
+          <h2 className="font-bold text-xl sm:text-2xl text-gray-800 mb-4">
+            Guest Reviews
+          </h2>
 
           <div className="space-y-4">
             {hotel.reviews && hotel.reviews.length > 0 ? (
               hotel.reviews.map((review: any, index: number) => (
                 <div
                   key={index}
-                  className="p-4 bg-gray-50 rounded-lg text-primary-light"
+                  className="p-3 sm:p-4 bg-gray-50 rounded-lg text-primary-light"
                 >
                   <div className="flex items-center gap-2 mb-2">
                     <div className="w-8 h-8 bg-gray-300 rounded-full overflow-hidden flex items-center justify-center text-gray-600 font-medium">
                       {review.name ? review.name.charAt(0) : "G"}
                     </div>
                     <div>
-                      <p className="font-medium">{review.name || "Guest"}</p>
+                      <p className="font-medium text-sm sm:text-base">
+                        {review.name || "Guest"}
+                      </p>
                       <p className="text-xs text-gray-500">
                         {review.date || "Recent stay"}
                       </p>
                     </div>
                     <div className="ml-auto"></div>
                   </div>
-                  <p className="text-gray-700 text-sm">"{review.review}"</p>
+                  <p className="text-gray-700 text-xs sm:text-sm">
+                    "{review.review}"
+                  </p>
                 </div>
               ))
             ) : (
               <div className="p-4 bg-gray-50 rounded-lg text-center">
-                <p className="text-gray-600">
+                <p className="text-gray-600 text-sm">
                   No reviews yet. Be the first to review this hotel!
                 </p>
               </div>
@@ -217,93 +249,100 @@ const page = () => {
           </div>
         </div>
       </article>
-      <article className="sticky top-16 px-4 py-4 border border-zinc-300 shadow-xl rounded-lg bg-white h-fit text-primary-dark mb-12">
-        <form onSubmit={getBookingData}>
-          <div className="space-y-2">
-            <h1 className="font-bold text-2xl">Book this hotel</h1>
-            <p className="opacity-60">Select your dates and guests</p>
-            <div className="flex items-center space-x-4">
-              <div className="my-2 space-y-1 w-full">
-                <h2>Check-in</h2>
-                <div className="flex items-center relative">
-                  <Input
-                    type="date"
-                    placeholder="Mar 15"
-                    className="border border-zinc-300 focus:ring-2 ring-action-light outline-none transition-all duration-200 ease-out w-full"
-                    value={checkIn}
-                    onChange={(e) => setCheckIn(e.target.value)}
-                  />
-                </div>
-              </div>
-              <div className="my-2 w-full space-y-1">
-                <h2>Check-out</h2>
-                <div className="flex items-center relative">
-                  <Input
-                    value={checkOut}
-                    onChange={(e) => setCheckOut(e.target.value)}
-                    type="date"
-                    placeholder="Mar 20"
-                    className="border border-zinc-300 focus:ring-2 ring-action-light outline-none transition-all duration-200 ease-out w-full"
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="my-2 space-y-1">
-              <h2>Guests</h2>
-              <div>
-                <select
-                  value={guests}
-                  onChange={(e) => setGuests(e.target.value)}
-                  name="guests"
-                  id="guests"
-                  className="rounded-lg p-2 border border-zinc-300 focus:ring-2 ring-action-light outline-none transition-all duration-200 ease-out w-full"
-                >
-                  <option value="1 Adult">1 Adult</option>
-                  <option value="2 Adults">2 Adults</option>
-                  <option value="3 Adults">3 Adults</option>
-                  <option value="4 Adults">4 Adults</option>
-                  <option value="2 Adults, 1 Child">2 Adults, 1 Child</option>
-                  <option value="2 Adults, 2 Children">
-                    2 Adults, 2 Children
-                  </option>
-                </select>
-              </div>
-            </div>
-            <div className="my-2 space-y-1">
-              <h2>Room Type</h2>
-              <div>
-                <select
-                  value={roomType}
-                  onChange={(e) => setRoomType(e.target.value)}
-                  name="roomType"
-                  id="roomType"
-                  className="rounded-lg p-2 border border-zinc-300 focus:ring-2 ring-action-light outline-none transition-all duration-200 ease-out w-full"
-                >
-                  <option value="Standard Room">Standard Room</option>
-                  <option value="Delux Room<">Delux Room</option>
-                  <option value="Executive Room">Executive Room</option>
-                  <option value="Family Room">Family Room</option>
-                </select>
-              </div>
-            </div>
-            {message && (
-              <div>
-                <p className="text-red-500 bg-red-100 border border-red-300 rounded-lg p-1 text-center">
-                  {message}
-                </p>
-              </div>
-            )}
-            <Button
-              className="text-text-light bg-primary-light cursor-pointer hover:bg-primary-light/90 transition-colors duration-200 ease-out my-2 w-full p-6"
-              type="submit"
-            >
-              Reserve Now
-            </Button>
 
-            <p className="text-zinc-600 text-center my-2">
-              You won't be charged yet
-            </p>
-            <hr className="text-zinc-300" />
+      {/* Booking form column */}
+      <article className="w-full lg:w-1/3 sticky top-20 px-4 py-4 border border-zinc-300 shadow-xl rounded-lg bg-white h-fit text-primary-dark mb-12 max-h-[calc(100vh-6rem)] overflow-y-auto">
+        <form onSubmit={getBookingData} className="space-y-4">
+          <div>
+            <h2 className="font-bold text-xl sm:text-2xl">Book this hotel</h2>
+            <p className="text-sm opacity-60">Select your dates and guests</p>
+          </div>
+
+          {/* Check-in/Check-out dates */}
+          <div className="flex flex-col sm:flex-row gap-4">
+            <div className="w-full space-y-1">
+              <h3 className="text-sm font-medium">Check-in</h3>
+              <Input
+                type="date"
+                placeholder="Check-in date"
+                className="border border-zinc-300 focus:ring-2 ring-action-light outline-none transition-all duration-200 ease-out w-full text-sm"
+                value={checkIn}
+                onChange={(e) => setCheckIn(e.target.value)}
+              />
+            </div>
+            <div className="w-full space-y-1">
+              <h3 className="text-sm font-medium">Check-out</h3>
+              <Input
+                value={checkOut}
+                onChange={(e) => setCheckOut(e.target.value)}
+                type="date"
+                placeholder="Check-out date"
+                className="border border-zinc-300 focus:ring-2 ring-action-light outline-none transition-all duration-200 ease-out w-full text-sm"
+              />
+            </div>
+          </div>
+
+          {/* Guests selection */}
+          <div className="space-y-1">
+            <h3 className="text-sm font-medium">Guests</h3>
+            <select
+              value={guests}
+              onChange={(e) => setGuests(e.target.value)}
+              name="guests"
+              id="guests"
+              className="rounded-lg p-2 border border-zinc-300 focus:ring-2 ring-action-light outline-none transition-all duration-200 ease-out w-full text-sm"
+            >
+              <option value="1 Adult">1 Adult</option>
+              <option value="2 Adults">2 Adults</option>
+              <option value="3 Adults">3 Adults</option>
+              <option value="4 Adults">4 Adults</option>
+              <option value="2 Adults, 1 Child">2 Adults, 1 Child</option>
+              <option value="2 Adults, 2 Children">2 Adults, 2 Children</option>
+            </select>
+          </div>
+
+          {/* Room type selection */}
+          <div className="space-y-1">
+            <h3 className="text-sm font-medium">Room Type</h3>
+            <select
+              value={roomType}
+              onChange={(e) => setRoomType(e.target.value)}
+              name="roomType"
+              id="roomType"
+              className="rounded-lg p-2 border border-zinc-300 focus:ring-2 ring-action-light outline-none transition-all duration-200 ease-out w-full text-sm"
+            >
+              <option value="Standard Room">Standard Room</option>
+              <option value="Delux Room">Delux Room</option>
+              <option value="Executive Room">Executive Room</option>
+              <option value="Family Room">Family Room</option>
+            </select>
+          </div>
+
+          {/* Error message */}
+          {message && (
+            <div>
+              <p className="text-red-500 bg-red-100 border border-red-300 rounded-lg p-2 text-center text-sm">
+                {message}
+              </p>
+            </div>
+          )}
+
+          {/* Reserve button */}
+          <Button
+            className="text-text-light bg-primary-light cursor-pointer hover:bg-primary-light/90 transition-colors duration-200 ease-out w-full p-5 text-base"
+            type="submit"
+          >
+            Reserve Now
+          </Button>
+
+          <p className="text-zinc-600 text-center text-xs sm:text-sm">
+            You won't be charged yet
+          </p>
+
+          <hr className="text-zinc-300" />
+
+          {/* Price breakdown */}
+          <div className="space-y-3 text-sm">
             <div className="flex items-center justify-between">
               <p className="text-gray-600">
                 ${hotel.price} x {nights} nights
@@ -315,20 +354,33 @@ const page = () => {
               <p className="text-gray-600">Taxes and fees</p>
               <p className="font-bold">${taxes}</p>
             </div>
-            <hr className="text-zinc-300" />
-            <div className="flex items-center justify-between p-3 rounded-lg border border-action-light/20 bg-action-light/10 my-4">
-              <p className="text-primary-light">Total</p>
-              <p className="font-bold">${priceBeforeTaxes + taxes}</p>
+          </div>
+
+          <hr className="text-zinc-300" />
+
+          {/* Total price */}
+          <div className="flex items-center justify-between p-3 rounded-lg border border-action-light/20 bg-action-light/10">
+            <p className="text-primary-light font-medium">Total</p>
+            <p className="font-bold">${priceBeforeTaxes + taxes}</p>
+          </div>
+
+          {/* Additional information */}
+          <div className="space-y-2 text-zinc-500">
+            <div className="flex items-start space-x-2 text-xs sm:text-sm">
+              <img
+                src="/check.svg"
+                alt="check mark"
+                className="w-4 h-4 mt-0.5"
+              />
+              <p>Free cancellation up to 48 hours before check-in</p>
             </div>
-            <div className="space-y-2 text-zinc-500">
-              <div className="flex items-center space-x-1 text-sm">
-                <img src="/check.svg" alt="check mark" className="w-4" />
-                <p>Free cancellation up to 48 hours before check-in</p>
-              </div>
-              <div className="flex items-center space-x-1 text-sm">
-                <img src="/check.svg" alt="check mark" className="w-4" />
-                <p>Pay at the property available</p>
-              </div>
+            <div className="flex items-start space-x-2 text-xs sm:text-sm">
+              <img
+                src="/check.svg"
+                alt="check mark"
+                className="w-4 h-4 mt-0.5"
+              />
+              <p>Pay at the property available</p>
             </div>
           </div>
         </form>
@@ -337,4 +389,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

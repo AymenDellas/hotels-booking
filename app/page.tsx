@@ -12,7 +12,7 @@ const page = () => {
   return (
     <main className="relative overflow-hidden">
       <section
-        className="flex items-center justify-center px-2 py-20 lg:py-48 bg-cover bg-center"
+        className="flex items-center justify-center px-2 py-20 lg:py-60 bg-cover bg-center"
         style={{
           backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/5.jpg)`,
         }}

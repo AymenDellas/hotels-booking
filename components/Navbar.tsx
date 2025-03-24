@@ -72,7 +72,7 @@ const Navbar = () => {
           </div>
         </div>
         <div
-          className="text-text-light dark:text-text-dark cursor-pointer lg:hidden"
+          className="text-text-light dark:text-primary-dark cursor-pointer lg:hidden"
           onClick={() => setToggleSiderBar(true)}
         >
           <Menu size={24} />
@@ -83,7 +83,7 @@ const Navbar = () => {
             toggleSiderBar ? "translate-x-0" : "translate-x-full"
           } transition-transform duration-300 ease-out`}
         >
-          <div className="absolute right-0 top-0 bg-text-light dark:bg-primary-light text-primary-light p-2 pt-8 rounded-lg shadow-lg h-full w-64 transition-transform transform translate-x-0">
+          <div className="absolute right-0 top-0 bg-text-light dark:bg-primary-light text-primary-light dark:text-text-dark p-2 pt-8 rounded-lg shadow-lg h-full w-64 transition-transform transform translate-x-0">
             <div
               className="cursor-pointer mb-4"
               onClick={() => setToggleSiderBar(false)}
