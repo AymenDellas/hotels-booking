@@ -1,17 +1,41 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Building, Menu, X, Sun, Moon } from "lucide-react";
+import { Building, Menu, X, Sun, Moon, User, LogOut } from "lucide-react";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
+import { supabase } from "@/lib/supabase";
 const Navbar = () => {
   const pathname = usePathname();
   const [toggleSiderBar, setToggleSiderBar] = useState<boolean>(false);
   const [toggleDarkMode, setToggleDarkMode] = useState<string>("dark");
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
+  const [user, setUser] = useState<any>(null);
+  const [isOpen, setIsOpen] = useState(false);
+  useEffect(() => {
+    const checkUser = async () => {
+      const { data } = await supabase.auth.getSession();
+      setUser(data?.session?.user || null);
+    };
 
-  // Handle scroll effects
+    checkUser();
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setUser(session?.user || null);
+      }
+    );
+    return () => {
+      listener?.subscription.unsubscribe();
+    };
+  }, []);
+  const formattedCreatedAt = new Date(user?.created_at).toLocaleDateString(
+    "en-US",
+    {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    }
+  );
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
@@ -21,13 +45,11 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Toggle theme function
   const toggleTheme = () => {
     setToggleDarkMode(toggleDarkMode === "dark" ? "light" : "dark");
     document.documentElement.classList.toggle("dark");
   };
 
-  // Close sidebar when clicking outside
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (toggleSiderBar && e.target instanceof Element) {
@@ -50,10 +72,10 @@ const Navbar = () => {
         isScrolled ? "shadow-md" : "shadow-lg"
       } 
       bg-primary-light dark:bg-text-dark text-text-light dark:text-primary-dark 
-      overflow-x-hidden transition-shadow duration-300`}
+   transition-shadow duration-300`}
     >
       {/* Desktop Navigation */}
-      <div className="hidden lg:flex items-center justify-between max-w-7xl mx-auto">
+      <div className=" hidden lg:flex items-center justify-between max-w-7xl mx-auto">
         <div>
           <Link
             href="/"
@@ -87,7 +109,7 @@ const Navbar = () => {
             ))}
           </ul>
         </div>
-        <div>
+        <div className="flex items-center space-x-4">
           <Button
             onClick={toggleTheme}
             className="w-10 h-10 rounded-full bg-text-light/10 dark:bg-primary-dark/10 hover:bg-text-light/20 
@@ -114,6 +136,49 @@ const Navbar = () => {
               size={20}
             />
           </Button>
+          {user ? (
+            <div className="relative">
+              <div
+                onClick={() => setIsOpen(!isOpen)}
+                className="flex items-center justify-center w-10 h-10 rounded-full border border-text-light dark:border-primary-dark text-text-dark dark:text-primary-dark cursor-pointer hover:bg-text-dark/10 dark:hover:bg-primary-dark/20 transition-colors duration-200 ease-out"
+                aria-expanded={isOpen}
+                aria-haspopup="true"
+              >
+                <User className="w-5 h-5" />
+              </div>
+
+              {isOpen && (
+                <div className="flex flex-col absolute mt-2 right-0 bg-text-dark  dark:bg-primary-dark text-gray-800 dark:text-text-dark rounded-lg shadow-xl   p-4 w-64 z-50 transition-all duration-200 ease-in-out">
+                  <div className="border-b border-gray-200 dark:border-white/40  pb-3 mb-3">
+                    <h3 className="text-lg font-semibold truncate">
+                      {user.email}
+                    </h3>
+                    <p className="text-sm text-gray-500 dark:text-text-light/70 mt-1">
+                      Created: {formattedCreatedAt}
+                    </p>
+                  </div>
+
+                  <button
+                    className="mt-2 flex items-center text-text-light bg-primary-dark  dark:text-primary-dark dark:bg-text-dark hover:bg-primary-dark/80 dark:hover:bg-text-dark/80 px-4 py-2  rounded-md transition-colors duration-200 cursor-pointer"
+                    onClick={() => supabase.auth.signOut()}
+                    aria-label="Log out"
+                  >
+                    <LogOut className="w-4 h-4 mr-2" />
+                    <span className="font-medium">Log out</span>
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="flex items-center space-x-4">
+              <Button className="border border-text-light dark:border-primary-dark text-lg  text-text-dark dark:text-primary-dark cursor-pointer hover:bg-text-dark/20 dark:hover:bg-primary-dark/10 transition-colors duration-200 ease-out px-4 py-2">
+                <Link href="/login">Login</Link>
+              </Button>
+              <Button className=" text-lg bg-text-light text-primary-light dark:text-text-light dark:bg-primary-light cursor-pointer hover:bg-text-dark/80 dark:hover:bg-primary-dark/90 transition-colors duration-200 ease-out px-4 py-2">
+                <Link href="/register">Register</Link>
+              </Button>
+            </div>
+          )}
         </div>
       </div>
 
@@ -196,6 +261,31 @@ const Navbar = () => {
                 </li>
               ))}
             </ul>
+
+            {/* Auth buttons in mobile sidebar */}
+            <div className="p-4 border-t border-primary-light/10 dark:border-text-dark/10 space-y-3">
+              {user ? (
+                <Button
+                  onClick={() => supabase.auth.signOut()}
+                  className="w-full border border-primary-light/20 dark:border-text-dark/20 text-lg text-primary-light dark:text-text-dark cursor-pointer hover:bg-primary-light/5 dark:hover:bg-text-dark/5 transition-colors duration-200 ease-out py-2"
+                >
+                  Log out
+                </Button>
+              ) : (
+                <div className="flex flex-col space-y-3">
+                  <Button className="w-full border border-primary-light/20 dark:border-text-dark/20 text-lg text-primary-light dark:text-text-dark cursor-pointer hover:bg-primary-light/5 dark:hover:bg-text-dark/5 transition-colors duration-200 ease-out py-2">
+                    <Link href="/login" className="w-full block">
+                      Login
+                    </Link>
+                  </Button>
+                  <Button className="w-full text-lg bg-primary-light text-text-light dark:bg-text-dark dark:text-primary-light cursor-pointer hover:bg-primary-light/90 dark:hover:bg-text-dark/90 transition-colors duration-200 ease-out py-2">
+                    <Link href="/register" className="w-full block">
+                      Register
+                    </Link>
+                  </Button>
+                </div>
+              )}
+            </div>
 
             <div className="p-4 border-t border-primary-light/10 dark:border-text-dark/10">
               <Button

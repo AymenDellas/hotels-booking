@@ -83,12 +83,21 @@ const Page = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [nights, setNights] = useState(1);
   const [isBooking, setIsBooking] = useState(false);
+  const [userId, setUserId] = useState<string | null>(null); // State to store user ID
   const setBookingData = useBookingsStore<any>((state) => state.addBooking);
 
   const checkInDate = new Date(checkIn).getTime();
   const checkOutDate = new Date(checkOut).getTime();
-
-  const getBookingData = (e: React.FormEvent) => {
+  useEffect(() => {
+    const checkUser = async () => {
+      const { data } = await supabase.auth.getSession();
+      if (data.session?.user) {
+        setUserId(data.session.user.id);
+      }
+    };
+    checkUser();
+  }, []);
+  const getBookingData = async (e: React.FormEvent) => {
     e.preventDefault();
     // Reset messages
     setMessage("");
@@ -115,6 +124,8 @@ const Page = () => {
 
     // Create booking data object
     const bookingData = {
+      user_id: userId,
+      status: "active",
       hotelId: id,
       checkIn,
       checkOut,
@@ -130,23 +141,34 @@ const Page = () => {
     // Set loading state
     setIsBooking(true);
 
-    // Simulate API call with a timeout
-    setTimeout(() => {
-      // Store booking data
-      setBookingData(bookingData);
+    try {
+      const { data, error } = await supabase
+        .from("bookings")
+        .insert([bookingData]);
 
-      // Show success message
-      setSuccessMessage(
-        `Booking confirmed! Your ${roomType} has been reserved at ${
-          hotel.name
-        } from ${new Date(checkIn).toLocaleDateString()} to ${new Date(
-          checkOut
-        ).toLocaleDateString()}.`
-      );
+      if (error) {
+        setMessage("Error creating booking");
+        console.error("Error creating booking: ", error);
+      } else {
+        // Store booking data
+        setBookingData(bookingData);
 
+        // Show success message
+        setSuccessMessage(
+          `Booking confirmed! Your ${roomType} has been reserved at ${
+            hotel.name
+          } from ${new Date(checkIn).toLocaleDateString()} to ${new Date(
+            checkOut
+          ).toLocaleDateString()}.`
+        );
+      }
+    } catch (err) {
+      console.error("Error in booking process:", err);
+      setMessage("An unexpected error occurred");
+    } finally {
       // Reset loading state
       setIsBooking(false);
-    }, 800);
+    }
   };
 
   const taxes = Number((hotel.price * 0.2).toFixed(2));
