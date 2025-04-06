@@ -18,7 +18,8 @@ const FeaturedHotels = () => {
   }, []);
 
   return (
-    <section className="flex flex-col items-center text-primary-light dark:text-text-dark my-8">
+    <section className="flex flex-col items-center text-primary-light dark:text-text-dark my-8 relative">
+      <div className="absolute w-[35vw] h-[35vh] rounded-full bg-amber-700/30 dark:bg-text-dark/10 blur-3xl -z-10 top-0 left-0 -translate-x-1/2 -translate-y-1/2"></div>
       <div className=" text-center space-y-2">
         <h1 className="font-bold text-4xl">Top Picks for You</h1>
         <em className="text-sm">
@@ -33,7 +34,7 @@ const FeaturedHotels = () => {
             .map((hotel: any, index: any) => {
               return (
                 <div
-                  className="w-96 h-[410px]  rounded-xl overflow-hidden bg-white shadow-xl text-primary-light"
+                  className="w-96 h-[410px] flex flex-col rounded-xl overflow-hidden bg-white shadow-xl text-primary-light"
                   key={index}
                 >
                   <div
@@ -54,7 +55,7 @@ const FeaturedHotels = () => {
                       <h2>{hotel.rating}</h2>
                     </div>
                   </div>
-                  <div className="p-3 space-y-2">
+                  <div className="p-3 space-y-2 ">
                     <div className="flex items-center space-x-4 justify-between">
                       <h1 className="text-lg font-semibold">{hotel.name}</h1>
                       <div className="text-action-light font-semibold flex items-end space-x-0.5">

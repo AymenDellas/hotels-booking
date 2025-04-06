@@ -29,7 +29,7 @@ const page = () => {
             Luxury accommodations, exclusive deals, and unforgettable
             experiences await at destinations worldwide.
           </p>
-          <Button className="my-4 text-lg text-text-light bg-primary-light cursor-pointer hover:bg-primary-light transition-colors duration-200 ease-out px-8 py-6">
+          <Button className="my-4 text-lg text-text-light bg-primary-light cursor-pointer hover:bg-secondary-light transition-colors duration-200 ease-out px-8 py-6">
             <Link href="/listings">Browse Hotels</Link>
           </Button>
 
@@ -58,31 +58,35 @@ const page = () => {
         </div>
       </section>
       <FeaturedHotels />
-      <section className="flex flex-col items-center">
+      <section className="flex flex-col items-center relative">
+        <div className="absolute w-[35vw] h-[35vh] rounded-full bg-amber-600/30 dark:bg-text-dark/30 blur-3xl -z-10 top-0 left-0"></div>
         <h1 className="font-bold text-4xl text-primary-light dark:text-text-dark">
           Why Book With Us?
         </h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-12 my-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-12 my-12 ">
           {whyChooseUs.map((reason, index) => {
             return (
               <div
-                className="flex flex-col bg-white rounded-lg shadow-lg p-4 space-y-4 border border-border-light hover:-translate-y-1 transition-transform duration-300 ease-out"
+                className="flex flex-col bg-text-dark rounded-lg shadow-lg p-4 space-y-4 border border-border-light hover:-translate-y-1 transition-transform duration-300 ease-out"
                 key={index}
               >
                 <div className="flex items-center space-x-3">
-                  <span className="p-5 rounded-lg bg-card-light border border-border-light shadow-2xl">
+                  <span className="p-5 rounded-full bg-card-light border border-border-dark/50 shadow-2xl">
                     <reason.icon />
                   </span>
                   <h2 className="text-xl font-bold">{reason.title}</h2>
                 </div>
-                <div className="p-2">{reason.description}</div>
+                <div className="p-2 text-amber-800/70">
+                  {reason.description}
+                </div>
               </div>
             );
           })}
         </div>
       </section>
-      <section className="mb-20">
-        <div className="text-primary-light w-[70%] max-lg:w-[90%] mx-auto bg-card-light rounded-lg pt-8 flex flex-col items-center space-y-4 text-center px-4">
+      <section className="mb-20 relative">
+        <div className="absolute w-[35vw] h-[35vh] rounded-full bg-amber-700/30 dark:bg-text-dark/10 blur-3xl -z-10 bottom-0 right-0"></div>
+        <div className="text-primary-light w-[70%] max-lg:w-[90%] mx-auto bg-gradient-to-r from-primary-dark to-text-dark rounded-lg pt-8 flex flex-col items-center space-y-4 text-center px-4 ring-2 ring-amber-700/30">
           <h1 className="font-bold text-4xl">Find Your Perfect Stay Today!</h1>
           <em className="text-sm">
             Explore thousands of hotels worldwide and book your dream getaway
