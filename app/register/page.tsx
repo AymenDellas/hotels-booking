@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
+import { Button } from "@/components/ui/button";
 export default function page() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -61,18 +62,18 @@ export default function page() {
       </div>
     );
   return (
-    <div className="flex min-h-screen items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
+    <div className="flex min-h-screen items-center justify-center px-4 py-12 sm:px-6 lg:px-8 dark:bg-[var(--color-background-dark)]">
       <div className="w-full max-w-md space-y-8">
         <div>
-          <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
+          <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900 dark:text-[var(--color-text-dark)]">
             Create a new account
           </h2>
         </div>
 
         {error && (
-          <div className="rounded-md bg-red-50 p-4">
+          <div className="rounded-md bg-red-50 dark:bg-red-900/20 p-4">
             <div className="flex">
-              <div className="text-sm text-red-700">{error}</div>
+              <div className="text-sm text-red-700 dark:text-red-400">{error}</div>
             </div>
           </div>
         )}
@@ -82,7 +83,7 @@ export default function page() {
             <div>
               <label
                 htmlFor="name"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-gray-700 dark:text-[var(--color-text-dark)]"
               >
                 Full Name
               </label>
@@ -92,7 +93,7 @@ export default function page() {
                 type="text"
                 autoComplete="name"
                 required
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-[var(--color-primary-light)] focus:outline-none focus:ring-[var(--color-primary-light)] sm:text-sm dark:bg-[var(--color-card-dark)] dark:border-[var(--color-border-dark)] dark:text-[var(--color-text-dark)]"
                 placeholder="Full Name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -102,7 +103,7 @@ export default function page() {
             <div>
               <label
                 htmlFor="email-address"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-gray-700 dark:text-[var(--color-text-dark)]"
               >
                 Email address
               </label>
@@ -112,7 +113,7 @@ export default function page() {
                 type="email"
                 autoComplete="email"
                 required
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-[var(--color-primary-light)] focus:outline-none focus:ring-[var(--color-primary-light)] sm:text-sm dark:bg-[var(--color-card-dark)] dark:border-[var(--color-border-dark)] dark:text-[var(--color-text-dark)]"
                 placeholder="Email address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -122,7 +123,7 @@ export default function page() {
             <div>
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-gray-700 dark:text-[var(--color-text-dark)]"
               >
                 Password
               </label>
@@ -132,7 +133,7 @@ export default function page() {
                 type="password"
                 autoComplete="new-password"
                 required
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-[var(--color-primary-light)] focus:outline-none focus:ring-[var(--color-primary-light)] sm:text-sm dark:bg-[var(--color-card-dark)] dark:border-[var(--color-border-dark)] dark:text-[var(--color-text-dark)]"
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -142,7 +143,7 @@ export default function page() {
             <div>
               <label
                 htmlFor="confirm-password"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-gray-700 dark:text-[var(--color-text-dark)]"
               >
                 Confirm Password
               </label>
@@ -152,7 +153,7 @@ export default function page() {
                 type="password"
                 autoComplete="new-password"
                 required
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-[var(--color-primary-light)] focus:outline-none focus:ring-[var(--color-primary-light)] sm:text-sm dark:bg-[var(--color-card-dark)] dark:border-[var(--color-border-dark)] dark:text-[var(--color-text-dark)]"
                 placeholder="Confirm Password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
@@ -161,19 +162,19 @@ export default function page() {
           </div>
 
           <div>
-            <button
+            <Button
               type="submit"
-              className="group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              className="text-text-light bg-primary-light cursor-pointer hover:bg-primary-light/90 transition-colors duration-200 ease-out w-full p-5 text-base disabled:opacity-70 disabled:cursor-not-allowed dark:bg-[var(--color-primary-dark)] dark:hover:bg-[var(--color-secondary-dark)]"
             >
               Register
-            </button>
+            </Button>
           </div>
 
-          <div className="text-center text-sm">
+          <div className="text-center text-sm dark:text-[var(--color-text-dark)]">
             Already have an account?{" "}
             <Link
               href="/login"
-              className="font-medium text-indigo-600 hover:text-indigo-500"
+              className="font-medium text-gray-800 hover:text-primary-light dark:text-[var(--color-text-dark)] dark:hover:text-[var(--color-action-dark)]"
             >
               Sign in
             </Link>

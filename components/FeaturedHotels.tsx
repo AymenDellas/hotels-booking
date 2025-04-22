@@ -19,7 +19,6 @@ const FeaturedHotels = () => {
 
   return (
     <section className="flex flex-col items-center text-primary-light dark:text-text-dark my-8 relative">
-      <div className="absolute w-[35vw] h-[35vh] rounded-full bg-amber-700/30 dark:bg-text-dark/10 blur-3xl -z-10 top-0 left-0 -translate-x-1/2 -translate-y-1/2"></div>
       <div className=" text-center space-y-2">
         <h1 className="font-bold text-4xl">Top Picks for You</h1>
         <em className="text-sm">
@@ -34,7 +33,7 @@ const FeaturedHotels = () => {
             .map((hotel: any, index: any) => {
               return (
                 <div
-                  className="w-96 h-[410px] flex flex-col rounded-xl overflow-hidden bg-white shadow-xl text-primary-light"
+                  className="w-96 h-[410px] flex flex-col rounded-xl overflow-hidden bg-white shadow-xl text-primary-light dark:bg-[var(--color-card-dark)] dark:text-[var(--color-text-dark)]"
                   key={index}
                 >
                   <div
@@ -45,7 +44,7 @@ const FeaturedHotels = () => {
                     }}
                     className="min-h-[250px] max-h-[250px] w-full"
                   >
-                    <div className="flex items-center space-x-1 bg-white rounded-full px-2 float-right m-2 shadow-lg">
+                    <div className="flex items-center space-x-1 bg-white dark:bg-[var(--color-card-dark)] rounded-full px-2 float-right m-2 shadow-lg">
                       <img
                         src="/star.svg"
                         alt="star"
@@ -55,30 +54,32 @@ const FeaturedHotels = () => {
                       <h2>{hotel.rating}</h2>
                     </div>
                   </div>
-                  <div className="p-3 space-y-2 ">
+                  <div className="p-3 space-y-2 flex flex-col flex-grow">
                     <div className="flex items-center space-x-4 justify-between">
                       <h1 className="text-lg font-semibold">{hotel.name}</h1>
-                      <div className="text-action-light font-semibold flex items-end space-x-0.5">
+                      <div className="text-action-light dark:text-[var(--color-action-dark)] font-semibold flex items-end space-x-0.5">
                         <p className="text-lg">${hotel.price}</p>
                         <span className="text-sm">/night</span>
                       </div>
                     </div>
-                    <div className="flex items-center space-x-0.5 opacity-70 text-gray-900">
+                    <div className="flex items-center space-x-0.5 opacity-70 text-gray-900 dark:text-[var(--color-text-dark)]/70">
                       <MapPin className="" size={15} />
                       <h2 className="text-sm ">{hotel.location}</h2>
                     </div>
-                    <Link href={`/listings/hotel/${hotel.id}`} className="">
-                      <Button className="my-2 w-full text-text-light bg-primary-light cursor-pointer hover:bg-primary-light/90 transition-colors duration-200 ease-out ">
-                        Book Now
-                      </Button>
-                    </Link>
+                    <div className="mt-auto">
+                      <Link href={`/listings/hotel/${hotel.id}`} className="">
+                        <Button className="my-2 w-full text-text-light bg-primary-light cursor-pointer hover:bg-primary-light/90 transition-colors duration-200 ease-out dark:bg-[var(--color-primary-dark)] dark:hover:bg-[var(--color-secondary-dark)]">
+                          Book Now
+                        </Button>
+                      </Link>
+                    </div>
                   </div>
                 </div>
               );
             })}
         </div>
       ) : (
-        <p className="text center my-24 text-4xl font-bold animate-pulse text-primary-light">
+        <p className="text center my-24 text-4xl font-bold animate-pulse text-primary-light dark:text-[var(--color-text-dark)]">
           Loading...
         </p>
       )}

@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { CarouselDemo } from "@/components/CarouselDemo";
 import { useBookingsStore } from "@/lib/store";
-
+import { useRouter } from "next/navigation";
 import {
   Star,
   Wifi,
@@ -58,12 +58,26 @@ const Page = () => {
         return null;
     }
   };
-
+  const router = useRouter();
   const [hotel, setHotel] = useState<any>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [user, setUser] = useState<any>(null);
   const { id } = useParams();
 
   useEffect(() => {
     const getHotel = async () => {
+      setIsLoading(true);
+
+      // Get current user
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      if (!session) {
+        // Redirect to login if not authenticated
+        router.push("/login");
+        return;
+      }
       const { data, error } = await supabase
         .from("hotels")
         .select("*")
@@ -190,7 +204,15 @@ const Page = () => {
       setSuccessMessage("");
     }
   }, [checkIn, checkOut, guests, roomType]);
-
+  if (isLoading) {
+    return (
+      <div className="text-primary-light dark:text-text-dark mx-8 md:mx-20 xl:mx-36 2xl:mx-48 pt-52 max-lg:pt-36">
+        <div className="flex justify-center items-center h-64">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-light"></div>
+        </div>
+      </div>
+    );
+  }
   return (
     <section className="flex flex-col lg:flex-row justify-center items-start gap-6 text-primary-light dark:text-text-dark px-4 sm:px-6 lg:px-8 pt-24 md:pt-32 lg:pt-40 max-w-7xl mx-auto">
       {/* Main content column */}

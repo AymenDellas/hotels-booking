@@ -59,7 +59,6 @@ const page = () => {
       </section>
       <FeaturedHotels />
       <section className="flex flex-col items-center relative">
-        <div className="absolute w-[35vw] h-[35vh] rounded-full bg-amber-600/30 dark:bg-text-dark/30 blur-3xl -z-10 top-0 left-0"></div>
         <h1 className="font-bold text-4xl text-primary-light dark:text-text-dark">
           Why Book With Us?
         </h1>
@@ -85,8 +84,7 @@ const page = () => {
         </div>
       </section>
       <section className="mb-20 relative">
-        <div className="absolute w-[35vw] h-[35vh] rounded-full bg-amber-700/30 dark:bg-text-dark/10 blur-3xl -z-10 bottom-0 right-0"></div>
-        <div className="text-primary-light w-[70%] max-lg:w-[90%] mx-auto bg-gradient-to-r from-primary-dark to-text-dark rounded-lg pt-8 flex flex-col items-center space-y-4 text-center px-4 ring-2 ring-amber-700/30">
+        <div className="text-primary-dark w-[70%] max-lg:w-[90%] mx-auto bg-text-dark rounded-lg pt-8 flex flex-col items-center space-y-4 text-center px-4 ring-2 ring-amber-700/30">
           <h1 className="font-bold text-4xl">Find Your Perfect Stay Today!</h1>
           <em className="text-sm">
             Explore thousands of hotels worldwide and book your dream getaway
