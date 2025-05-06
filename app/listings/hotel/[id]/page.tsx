@@ -84,6 +84,7 @@ const Page = () => {
         .eq("id", id)
         .single();
       setHotel(data);
+      setIsLoading(false);
       if (error) console.error("Error fetching single hotel : ", error);
     };
     getHotel();

@@ -27,7 +27,7 @@ export default function page() {
     try {
       // Use redirectTo to specify the reset-password page
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/reset-password`,
+        redirectTo: `https://stayfinder-five.vercel.app//reset-password`,
       });
 
       if (error) {
@@ -48,11 +48,11 @@ export default function page() {
   return (
     <div className="flex min-h-screen items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
+        <div className="text-primary-dark dark:text-text-dark">
+          <h2 className="mt-6 text-center text-3xl font-bold tracking-tight ">
             Reset Your Password
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
+          <p className="mt-2 text-center text-sm">
             Enter your email address and we'll send you instructions to reset
             your password.
           </p>
@@ -74,12 +74,15 @@ export default function page() {
           </div>
         )}
 
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+        <form
+          className="mt-8 space-y-6 text-primary-dark dark:text-text-dark"
+          onSubmit={handleSubmit}
+        >
           <div className="space-y-4 rounded-md shadow-sm">
             <div>
               <label
                 htmlFor="email-address"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-primary-dark dark:text-text-dark"
               >
                 Email address
               </label>
@@ -100,7 +103,7 @@ export default function page() {
           <div>
             <button
               type="submit"
-              className="group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              className="group relative flex w-full justify-center rounded-md border border-transparent bg-primary-dark dark:bg-text-dark px-4 py-2 text-sm font-medium text-text-dark dark:text-primary-dark  focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
               disabled={loading}
             >
               {loading ? "Sending..." : "Send Reset Link"}
@@ -111,7 +114,7 @@ export default function page() {
             Remember your password?{" "}
             <Link
               href="/login"
-              className="font-medium text-indigo-600 hover:text-indigo-500"
+              className="font-medium text-primary-dark dark:text-text-dark"
             >
               Back to login
             </Link>
